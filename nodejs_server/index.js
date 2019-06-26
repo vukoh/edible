@@ -4,6 +4,7 @@ const mysql = require('mysql');
 const express = require('express');
 var app = express();
 const bodyParser = require('body-parser');
+const path = require('path');
 
 app.use(bodyParser.json());
 
@@ -22,7 +23,11 @@ mysqlConnection.connect((err) => {
     }
 });
 
-app.listen(3000, () => console.log('Express server is running at port no : 3000'));
+app.listen(process.env.PORT || 3000, () => console.log('Express server is running at port no : 3000'));
+
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 app.get('/ingredients', (req, res) => {
     mysqlConnection.query('SELECT * FROM ingredients', (err, rows, fields) => {
@@ -33,6 +38,7 @@ app.get('/ingredients', (req, res) => {
         }
     })
 });
+
 
 app.get('/ingredients/:name', (req, res) => {
     mysqlConnection.query('SELECT * FROM ingredients WHERE Name = ?', [req.params.name], (err, rows, fields) => {

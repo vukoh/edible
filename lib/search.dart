@@ -50,10 +50,7 @@ class _SearchPageState extends State<SearchPage> {
 }
 
 String _hostname() {
-        if (Platform.isAndroid)
-          return 'http://10.0.2.2:3000';
-        else
-          return 'http://localhost:3000';
+        return 'https://cryptic-lake-93970.herokuapp.com';
       }
 
 
