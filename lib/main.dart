@@ -1,3 +1,4 @@
+import 'package:edible/search.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -33,11 +34,22 @@ class MyHomePage extends StatelessWidget {
                     minWidth: 200.0,
                     height: 100.0,
                     child: RaisedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SearchPage()),
+                          );
+                        },
                         elevation: 20.0,
                         color: Colors.green,
                         child: Text('Search an Ingredient')))
               ]),
-        ));
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.camera_alt),
+          onPressed: (){} ,
+        ),
+      );
   }
 }
