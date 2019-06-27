@@ -44,33 +44,32 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(this.title),
-        ),
-        body: Center(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                ButtonTheme(
-                    minWidth: 200.0,
-                    height: 100.0,
-                    child: RaisedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SearchPage()),
-                          );
-                        },
-                        elevation: 20.0,
-                        color: Colors.green,
-                        child: Text('Search an Ingredient')))
-              ]),
-        ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.camera_alt),
-          onPressed: readText ,
-        ),
-      );
+      appBar: AppBar(
+        title: Text(this.title),
+      ),
+      body: Center(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              ButtonTheme(
+                  minWidth: 200.0,
+                  height: 100.0,
+                  child: RaisedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SearchPage()),
+                        );
+                      },
+                      elevation: 20.0,
+                      color: Colors.green,
+                      child: Text('Search an Ingredient')))
+            ]),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.camera_alt),
+        onPressed: readText,
+      ),
+    );
   }
 }
