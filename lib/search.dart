@@ -21,6 +21,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   List<Ingredient> _ingredients = List<Ingredient>();
+  List<Ingredient> _ingredientsForDisplay = List<Ingredient>();
 
   Future<List<Ingredient>> fetchIngredient() async {
     var url = 'https://cryptic-lake-93970.herokuapp.com/ingredients';
@@ -43,6 +44,7 @@ class _SearchPageState extends State<SearchPage> {
     fetchIngredient().then((value) {
       setState(() {
         _ingredients.addAll(value);
+        _ingredientsForDisplay = _ingredients;
       });
     });
     super.initState();
@@ -57,36 +59,57 @@ class _SearchPageState extends State<SearchPage> {
         ),
         body: ListView.builder(
           itemBuilder: (context, index) {
-            return Card(
+            return index == 0 ? _searchBar() : _listItem(index - 1);
+          },
+          itemCount: _ingredientsForDisplay.length + 1,
+        ));
+  }
+
+  _searchBar(){
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextField(
+        decoration: InputDecoration(
+          hintText: 'Search...'
+          ),
+          onChanged: (text) {
+            text = text.toLowerCase();
+             setState(() {
+              _ingredientsForDisplay = _ingredients.where((ingredient) {
+                var ingredientName = ingredient.name.toLowerCase();
+                return ingredientName.contains(text);
+              }).toList();}); 
+             }));
+  }
+
+  _listItem(index){
+    return Card(
                 child: Padding(
               padding: const EdgeInsets.only(
                   top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(_ingredients[index].name,
+                  Text(_ingredientsForDisplay[index].name,
                       style:
                           TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-                  Text(_ingredients[index].description,
+                  Text(_ingredientsForDisplay[index].description,
                       style: TextStyle(color: Colors.grey.shade600)),
                 ],
               ),
             ));
-          },
-          itemCount: _ingredients.length,
-        ));
   }
 
-  _makeGetRequest() async {
-    // only get a single item at index 0
-    String ingredientToGet = myController.text;
-    String url = '${_hostname()}/ingredients/$ingredientToGet';
-    Response response = await get(url);
-    int statusCode = response.statusCode;
-    String jsonString = response.body;
-    print('Status: $statusCode, $jsonString');
-  }
-}
+//   _makeGetRequest() async {
+//     // only get a single item at index 0
+//     String ingredientToGet = myController.text;
+//     String url = '${_hostname()}/ingredients/$ingredientToGet';
+//     Response response = await get(url);
+//     int statusCode = response.statusCode;
+//     String jsonString = response.body;
+//     print('Status: $statusCode, $jsonString');
+//   }
+// }
 
 String _hostname() {
   return 'https://cryptic-lake-93970.herokuapp.com';
