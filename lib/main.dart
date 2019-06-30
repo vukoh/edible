@@ -1,15 +1,10 @@
+import 'dart:io';
 import 'package:edible/results.dart';
 import 'package:edible/search.dart';
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-
-=======
-import 'package:http/http.dart'; //For repeated method
-import 'dart:convert'; //For repeated method
-import 'package:image_picker/image_picker.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:edible/database.dart' as db;
->>>>>>> 901a18d3a5d60da09ae524c68bf8c6e56d4af779
 
 void main() => runApp(MyApp());
 
@@ -65,10 +60,28 @@ class MyHomePage extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => ResultsPage()),
+            MaterialPageRoute(builder: (context) => ResultsPage(readTextfromCamera())),
           );
         },
       ),
     );
   }
 }
+Future<List<String>> readTextfromCamera() async {
+  List<String> _stringIngredientNamesToCheck = List<String>();
+
+  File pickedImage = await ImagePicker.pickImage(source: ImageSource.camera);
+  FirebaseVisionImage ourImage = FirebaseVisionImage.fromFile(pickedImage);
+  TextRecognizer recognizeText = FirebaseVision.instance.textRecognizer();
+  VisionText readText = await recognizeText.processImage(ourImage);
+
+  for (TextBlock block in readText.blocks) {
+    for (TextLine line in block.lines) {
+      for (TextElement word in line.elements) {
+        _stringIngredientNamesToCheck.add(word.text);
+      }
+    }
+  }
+  return _stringIngredientNamesToCheck;
+}
+//Todo: Fix function so using back in camera doesn't crash app
