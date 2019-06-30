@@ -95,7 +95,7 @@ class _SearchPageState extends State<SearchPage> {
       ),
     ));
   }
-
+}
 //   _makeGetRequest() async {
 //     // only get a single item at index 0
 //     String ingredientToGet = myController.text;
