@@ -1,9 +1,8 @@
-import 'dart:io';
+
 import 'package:edible/ingredient.dart';
 import 'package:flutter/material.dart';
 import 'package:edible/information.dart';
-import 'package:http/http.dart';
-import 'dart:convert';
+import 'package:edible/database.dart' as db; 
 
 class SearchPage extends StatefulWidget {
   @override
@@ -20,33 +19,13 @@ class _SearchPageState extends State<SearchPage> {
   //   super.dispose();
   // }
 
-  List<Ingredient> _ingredients = List<Ingredient>();
-  List<Ingredient> _ingredientsForDisplay = List<Ingredient>();
-
-  Future<List<Ingredient>> fetchIngredient() async {
-    var url = 'https://cryptic-lake-93970.herokuapp.com/ingredients';
-    var response = await get(url);
-
-    var ingredients = List<Ingredient>();
-
-    if (response.statusCode == 200) {
-      var ingredientsJson = json.decode(response.body);
-      for (var ingredientJson in ingredientsJson) {
-        ingredients.add(Ingredient.fromJson(ingredientJson));
-      }
-    }
-
-    return ingredients;
-  }
+  List<Ingredient> _ingredientsForDisplay = db.ingredients;
 
   @override
   void initState() {
-    fetchIngredient().then((value) {
       setState(() {
-        _ingredients.addAll(value);
-        _ingredientsForDisplay = _ingredients;
+        _ingredientsForDisplay = db.ingredients;
       });
-    });
     super.initState();
   }
 
@@ -76,7 +55,7 @@ class _SearchPageState extends State<SearchPage> {
             onChanged: (text) {
               text = text.toLowerCase();
               setState(() {
-                _ingredientsForDisplay = _ingredients.where((ingredient) {
+                _ingredientsForDisplay = db.ingredients.where((ingredient) {
                   var ingredientName = ingredient.name.toLowerCase();
                   return ingredientName.contains(text);
                 }).toList();

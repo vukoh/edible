@@ -7,13 +7,19 @@ import 'package:http/http.dart'; //For repeated method
 import 'dart:convert'; //For repeated method
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
+import 'package:edible/database.dart' as db;
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
+    db.fetchIngredient().then((value){
+      db.ingredients.addAll(value);
+    });
+
     return MaterialApp(
       title: 'Edible',
       theme: ThemeData(primarySwatch: Colors.green),
