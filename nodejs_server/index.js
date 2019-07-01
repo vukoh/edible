@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 var mysqlConnection = mysql.createConnection({
     host: 'remotemysql.com',
     user : 'SAnxkqsG09',
-    password: 'UVPm0V5IwA',
+    password: 'zvF4VuAySz',
     database : 'SAnxkqsG09'
 });
 
