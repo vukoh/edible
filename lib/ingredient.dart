@@ -27,6 +27,7 @@ class Ingredient{
   bool isHalal() {
     return this.halal == 1 ? true : false;
   }
+  //To do: Adjust function to put under maybe
 
 /* Todo
   bool isVegetarian() {

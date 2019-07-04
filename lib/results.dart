@@ -118,6 +118,7 @@ class ResultsPage extends StatelessWidget {
     );
   }
 }
+//To do: Adjust function to put under maybe halal etc, convert all to lowercase to compare
 abstract class ListItem {}
 
 // A ListItem that contains data to display a heading.
