@@ -1,10 +1,9 @@
-import 'dart:io';
 import 'package:edible/database.dart' as db;
 import 'package:edible/ingredient.dart';
+import 'package:edible/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:edible/information.dart';
-import 'package:firebase_ml_vision/firebase_ml_vision.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:edible/parse.dart' as parse;
 
 
 //Rename to something better, better architecture possible?
@@ -67,7 +66,7 @@ class ResultsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: readTextfromCamera(),
+      future: parse.readTextfromCamera(),
       builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
         if(snapshot.connectionState == ConnectionState.done){
           final title = 'Results';
@@ -76,8 +75,10 @@ class ResultsPage extends StatelessWidget {
           return MaterialApp(
             title: title,
             home: Scaffold(
+              backgroundColor: Color.fromRGBO(58, 86, 58, 1.0),
               appBar: AppBar(
                 title: Text(title),
+                backgroundColor: Color.fromRGBO(58, 86, 58, 1.0),
               ),
               body: ListView.builder(
                 itemCount: items.length,
@@ -85,34 +86,81 @@ class ResultsPage extends StatelessWidget {
                   final item = items[index];
 
                   if (item is HeadingItem) {
-                    return ListTile(
-                      title: Text(
-                        item.heading,
-                        style: Theme.of(context).textTheme.headline,
-                      ),
-                    );
+                    return InkWell(
+                      child: Card(
+                          elevation: 8.0,
+                          color: Color.fromRGBO(64, 96, 64, .9),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(item.heading,
+                                    style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey.shade200)),
+                              ],
+                            ),
+                          )));
+
                   } else if (item is MessageItem) {
-                    return ListTile(
-                      title: Text(item.sender),
-                    );
+                      return InkWell(
+                        child: Card(
+                            elevation: 8.0,
+                            color: Color.fromRGBO(64, 96, 64, .9),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(item.sender,
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          //fontWeight: FontWeight.bold,
+                                          color: Colors.grey.shade200)),
+                                ],
+                              ),
+                            )));
+
                   } else if (item is IngredientItem) {
-                    return ListTile(
-                      title: Text(item.ingredient.name),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                              InformationPage(item.ingredient)));
-                      },
-                    );
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      InformationPage(item.ingredient)));
+                        },
+                        child: Card(
+                            elevation: 8.0,
+                            color: Color.fromRGBO(64, 96, 64, .9),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 32.0, bottom: 32.0, left: 16.0, right: 16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(item.ingredient.name,
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          //fontWeight: FontWeight.bold,
+                                          color: Colors.grey.shade200)),
+                                  Text(item.ingredient.description,
+                                      style: TextStyle(color: Colors.grey.shade400)),
+                                ],
+                              ),
+                            )));
                   }
                 },
               ),
             ),
           );
         } else {
-          return CircularProgressIndicator();
+            return new ColorLoader3();
+          //return CircularProgressIndicator();
         }
       }
     );
@@ -136,21 +184,3 @@ class IngredientItem implements ListItem {
   final Ingredient ingredient;
   IngredientItem(this.ingredient);
 }
-Future<List<String>> readTextfromCamera() async {
-  List<String> _stringIngredientNamesToCheck = List<String>();
-
-  File pickedImage = await ImagePicker.pickImage(source: ImageSource.camera);
-  FirebaseVisionImage ourImage = FirebaseVisionImage.fromFile(pickedImage);
-  TextRecognizer recognizeText = FirebaseVision.instance.textRecognizer();
-  VisionText readText = await recognizeText.processImage(ourImage);
-
-  for (TextBlock block in readText.blocks) {
-    for (TextLine line in block.lines) {
-      for (TextElement word in line.elements) {
-        _stringIngredientNamesToCheck.add(word.text);
-      }
-    }
-  }
-  return _stringIngredientNamesToCheck;
-}
-//Todo: Fix function so using back in camera doesn't crash app
