@@ -1,67 +1,13 @@
-import 'package:edible/database.dart' as db;
-import 'package:edible/ingredient.dart';
 import 'package:edible/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:edible/information.dart';
 import 'package:edible/parse.dart' as parse;
+import 'package:edible/restrictions.dart' as restrictions;
 
 
 //Rename to something better, better architecture possible?
 class ResultsPage extends StatelessWidget {
   List<String> _stringIngredientNamesToCheck = new List<String>();
-  List<Ingredient> nonHalalIngredients = new List<Ingredient>();
-  List<String> missingIngredients = new List<String>();
-  List<Ingredient> halalIngredients = new List<Ingredient>();
-
-  List<ListItem> setHalal() {
-    //Logic for seperating
-    for(String name_to_check in _stringIngredientNamesToCheck) {
-      bool foundIngredient = false;
-      for(Ingredient curr_ingredient in db.ingredients) {
-        if(curr_ingredient.name.contains(name_to_check)) {
-          foundIngredient = true;
-          if(curr_ingredient.isHalal()) {
-            halalIngredients.add(curr_ingredient);
-            break;
-          } else {
-            nonHalalIngredients.add(curr_ingredient);
-            break;
-          }
-        }
-      }
-      if(foundIngredient == false) {
-        missingIngredients.add(name_to_check);
-      }
-    }
-    //Combining into one list
-    List<ListItem> outputList = new List<ListItem>();
-
-    outputList.add(new HeadingItem('Non-Halal Ingredients'));
-    for(Ingredient curr_nonHalalIngredient in nonHalalIngredients) {
-      outputList.add(new IngredientItem(curr_nonHalalIngredient));
-    }
-    if(nonHalalIngredients.isEmpty) {
-      outputList.add(new MessageItem('No non-halal ingredients found!'));
-    }
-
-    outputList.add(new HeadingItem('Missing Ingredients'));
-    for(String curr_missingIngredient in missingIngredients) {
-      outputList.add(new MessageItem(curr_missingIngredient));
-    }
-    if(missingIngredients.isEmpty) {
-      outputList.add(new MessageItem('No missing ingredients - all ingredients found!'));
-    }
-
-    outputList.add(new HeadingItem('Halal Ingredients'));
-    for(Ingredient curr_halalIngredient in halalIngredients) {
-      outputList.add(new IngredientItem(curr_halalIngredient));
-    }
-    if(halalIngredients.isEmpty) {
-      outputList.add(new MessageItem('No halal ingredients found!'));
-    }
-
-    return outputList;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +17,7 @@ class ResultsPage extends StatelessWidget {
         if(snapshot.connectionState == ConnectionState.done){
           final title = 'Results';
           _stringIngredientNamesToCheck = snapshot.data;
-          final List<ListItem> items = setHalal();
+          final List<restrictions.ListItem> items = restrictions.setKosher(_stringIngredientNamesToCheck);
           return MaterialApp(
             title: title,
             home: Scaffold(
@@ -85,7 +31,7 @@ class ResultsPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final item = items[index];
 
-                  if (item is HeadingItem) {
+                  if (item is restrictions.HeadingItem) {
                     return InkWell(
                       child: Card(
                           elevation: 8.0,
@@ -105,7 +51,7 @@ class ResultsPage extends StatelessWidget {
                             ),
                           )));
 
-                  } else if (item is MessageItem) {
+                  } else if (item is restrictions.MessageItem) {
                       return InkWell(
                         child: Card(
                             elevation: 8.0,
@@ -125,7 +71,7 @@ class ResultsPage extends StatelessWidget {
                               ),
                             )));
 
-                  } else if (item is IngredientItem) {
+                  } else if (item is restrictions.IngredientItem) {
                       return InkWell(
                         onTap: () {
                           Navigator.push(
@@ -160,27 +106,11 @@ class ResultsPage extends StatelessWidget {
           );
         } else {
             return new ColorLoader3();
-          //return CircularProgressIndicator();
         }
       }
     );
   }
 }
-//To do: Adjust function to put under maybe halal etc, convert all to lowercase to compare
-abstract class ListItem {}
 
-// A ListItem that contains data to display a heading.
-class HeadingItem implements ListItem {
-  final String heading;
-  HeadingItem(this.heading);
-}
 
-// A ListItem that contains data to display a message.
-class MessageItem implements ListItem {
-  final String sender;
-  MessageItem(this.sender);
-}
-class IngredientItem implements ListItem {
-  final Ingredient ingredient;
-  IngredientItem(this.ingredient);
-}
+
