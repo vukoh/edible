@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:edible/results.dart';
 import 'package:edible/search.dart';
 import 'package:flutter/material.dart';
