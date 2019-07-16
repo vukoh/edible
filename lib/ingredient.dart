@@ -1,5 +1,4 @@
 class Ingredient{
-  String code;
   String name;
   String description;
   String origin;
@@ -9,10 +8,9 @@ class Ingredient{
   String dietaryRestrictions;
   int halal;
 
-  Ingredient(this.code, this.name, this.description, this.halal);
+  Ingredient(this.name, this.description, this.halal);
 
   Ingredient.fromJson(Map<String, dynamic> json){
-    code = json['Code'];
     name = json['Name'];
     description = json['Description'];
     origin = json['Origin'];

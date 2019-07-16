@@ -53,6 +53,7 @@ class _SearchPageState extends State<SearchPage> {
                 hintText: 'Search...',
                 hintStyle: TextStyle(color: Colors.white)),
             onChanged: (text) {
+              print(db.ingredients.isEmpty);
               text = text.toLowerCase();
               setState(() {
                 _ingredientsForDisplay = db.ingredients.where((ingredient) {
