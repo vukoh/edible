@@ -15,12 +15,7 @@ class Ingredient{
   int lactoOvoPescatarian;
   int kosher;
 
-<<<<<<< HEAD
   Ingredient(this.name, this.description, this.halal);
-=======
-  //Double check this constructor - is this.halal needed?
-  Ingredient(this.code, this.name, this.description, this.halal);
->>>>>>> 47b22ca488628e57391d9a8d11065c56e467e430
 
   Ingredient.fromJson(Map<String, dynamic> json){
     name = json['Name'];
