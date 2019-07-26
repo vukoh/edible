@@ -2,11 +2,14 @@
 
 const mysql = require('mysql');
 const express = require('express');
-var app = express();
+const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
 
+const UsersRouter = require('./users/routes.config');
+
 app.use(bodyParser.json());
+
 
 var mysqlConnection = mysql.createConnection({
     host: 'remotemysql.com',
@@ -24,6 +27,8 @@ mysqlConnection.connect((err) => {
 });
 
 app.listen(process.env.PORT || 3000, () => console.log('Express server is running at port no : 3000'));
+
+UsersRouter.routesConfig(app);
 
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, 'index.html'));
@@ -48,3 +53,4 @@ app.get('/ingredients/:name', (req, res) => {
         }
     })
 })
+
