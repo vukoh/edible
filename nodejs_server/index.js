@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 
 const UsersRouter = require('./users/routes.config');
+const AuthorizationRouter = require('./authorization/routes.config');
 
 app.use(bodyParser.json());
 
@@ -29,6 +30,7 @@ mysqlConnection.connect((err) => {
 app.listen(process.env.PORT || 3000, () => console.log('Express server is running at port no : 3000'));
 
 UsersRouter.routesConfig(app);
+AuthorizationRouter.routesConfig(app);
 
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, 'index.html'));
