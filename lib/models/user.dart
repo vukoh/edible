@@ -4,9 +4,17 @@ class User {
   String _dietaryRestriction;
 
   User(this._username, this._password, this._dietaryRestriction);
+  
+  User.mapfromDatabase(dynamic obj) {
+    print(obj);
+    this._username = obj["username"];
+    this._password = obj["password"];
+    this._dietaryRestriction = obj["dietaryRestriction"];
+  }
 
   User.map(dynamic obj) {
-    this._username = obj["username"];
+    print(obj);
+    this._username = obj["email"];
     this._password = obj["password"];
     this._dietaryRestriction = obj["dietaryRestriction"];
   }

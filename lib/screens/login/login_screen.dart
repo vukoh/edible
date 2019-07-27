@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:edible/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:edible/auth.dart';
 import 'package:edible/data/database_helper.dart';
@@ -48,8 +49,7 @@ class LoginScreenState extends State<LoginScreen>
 
   @override
   onAuthStateChanged(AuthState state) {
-   
-    if(state == AuthState.LOGGED_IN)
+    if (state == AuthState.LOGGED_IN)
       Navigator.of(_ctx).pushReplacementNamed("/home");
   }
 
@@ -64,7 +64,7 @@ class LoginScreenState extends State<LoginScreen>
     var loginForm = new Column(
       children: <Widget>[
         new Text(
-          "Login App",
+          "Login",
           textScaleFactor: 2.0,
         ),
         new Form(
@@ -104,8 +104,7 @@ class LoginScreenState extends State<LoginScreen>
       body: new Container(
         decoration: new BoxDecoration(
           image: new DecorationImage(
-              image: new AssetImage("images/hi.jpg"),
-              fit: BoxFit.cover),
+              image: new AssetImage("images/hi.jpg"), fit: BoxFit.cover),
         ),
         child: new Center(
           child: new ClipRect(
@@ -129,6 +128,7 @@ class LoginScreenState extends State<LoginScreen>
   void onLoginError(String errorTxt) {
     _showSnackBar(errorTxt);
     setState(() => _isLoading = false);
+    Navigator.pushReplacementNamed(context, '/login');
   }
 
   @override
@@ -139,5 +139,12 @@ class LoginScreenState extends State<LoginScreen>
     await db.saveUser(user);
     var authStateProvider = new AuthStateProvider();
     authStateProvider.notify(AuthState.LOGGED_IN);
+    Navigator.pushReplacement(
+        context,
+        new MaterialPageRoute(
+            builder: (context) => new HomeScreen(
+                  title: 'Edible',
+                  user: user,
+                )));
   }
 }

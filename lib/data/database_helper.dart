@@ -37,6 +37,7 @@ class DatabaseHelper {
   }
 
   Future<int> saveUser(User user) async {
+    print(user.toString());
     var dbClient = await db;
     int res = await dbClient.insert("User", user.toMap());
     return res;
@@ -52,6 +53,12 @@ class DatabaseHelper {
     var dbClient = await db;
     var res = await dbClient.query("User");
     return res.length > 0? true: false;
+  }
+
+  Future<User> getUser() async{
+    var dbClient = await db;
+    var res = await dbClient.query("User");
+    return User.mapfromDatabase(res[0]);
   }
 
 }
