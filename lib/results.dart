@@ -1,8 +1,8 @@
 import 'package:edible/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:edible/information.dart';
-import 'package:edible/parse.dart' as parse;
 import 'package:edible/restrictions.dart' as restrictions;
+import 'package:edible/image_process.dart' as image_process;
 
 
 //Rename to something better, better architecture possible?
@@ -12,7 +12,7 @@ class ResultsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: parse.readTextfromCamera(),
+      future: image_process.overall(),
       builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
         if(snapshot.connectionState == ConnectionState.done){
           final title = 'Results';

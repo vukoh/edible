@@ -1,21 +1,10 @@
 library edible_parse;
 
-import 'dart:io';
-import 'package:firebase_ml_vision/firebase_ml_vision.dart';
-import 'package:image_picker/image_picker.dart';
-
-
-Future<List<String>> readTextfromCamera() async {
+List<String> clean(String translated_ingredients) {
 
   List<List<String>> ingredientsListToCheck = new List<List<String>>();
 
-  File pickedImage = await ImagePicker.pickImage(source: ImageSource.camera);
-  FirebaseVisionImage ourImage = FirebaseVisionImage.fromFile(pickedImage);
-  TextRecognizer recognizeText = FirebaseVision.instance.textRecognizer();
-  VisionText readText = await recognizeText.processImage(ourImage);
-  for (TextBlock block in readText.blocks) {
-    ingredientsListToCheck.add(splitByComma(block.text));
-  }
+  ingredientsListToCheck.add(splitByComma(translated_ingredients));
   List<String> finalList = new List<String>();
   for (List<String> blockList in ingredientsListToCheck) {
     for (String ingredient in blockList) {
