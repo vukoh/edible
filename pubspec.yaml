@@ -19,9 +19,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  image_picker: ^0.4.12
+  image_picker: ^0.6.0+17
   crypto: any
-  firebase_ml_vision: ^0.2.1
   sqflite: any
   path_provider: 0.4.0
   uni_links: any
