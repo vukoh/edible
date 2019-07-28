@@ -1,13 +1,35 @@
-import 'package:edible/results.dart';
-import 'package:edible/search.dart';
+import 'package:edible/routes.dart' as routes;
 import 'package:flutter/material.dart';
+import 'package:edible/screens/home/home_screen.dart';
+import 'package:edible/screens/login/login_screen.dart';
+import 'package:edible/data/database_helper.dart';
+import 'package:edible/models/user.dart';
 
 import 'package:edible/database.dart' as db;
 
-void main() => runApp(MyApp());
+DatabaseHelper dbh = new DatabaseHelper();
+
+void main() async {
+
+  Widget _defaultHome = new LoginScreen();
+
+  bool _isLoggedIn = await dbh.isLoggedIn();
+  
+  if(_isLoggedIn){
+    User user = await dbh.getUser();
+    print(user);
+    _defaultHome = new HomeScreen(title: 'Edible', user: user);
+  }
+
+  runApp(new MyApp(_defaultHome));
+
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+  MyApp(this._home);
+
+  final Widget _home;
 
   @override
   Widget build(BuildContext context) {
@@ -18,50 +40,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Edible',
       theme: ThemeData(primarySwatch: Colors.green),
-      home: MyHomePage(title: 'Edible Home'),
+      home: _home,
+      routes: routes.routes,
     );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
 
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(this.title),
-      ),
-      body: Center(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              ButtonTheme(
-                  minWidth: 200.0,
-                  height: 100.0,
-                  child: RaisedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => SearchPage()),
-                        );
-                      },
-                      elevation: 20.0,
-                      color: Colors.green,
-                      child: Text('Search an Ingredient')))
-            ]),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.camera_alt),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ResultsPage()),
-          );
-        },
-      ),
-    );
-  }
-}
