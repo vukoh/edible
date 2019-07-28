@@ -19,6 +19,7 @@ class RestDatasource {
           'email' : username,
           'password' : password
         }));
+    // if(jwt == null) throw new Exception('Invalid Credentials');
     String token = jwt["accessToken"];
     String id = jwt["id"];
     print(id);
@@ -36,7 +37,6 @@ class RestDatasource {
     return _netUtil.get(LOGIN_URL, headers: getHeaders
     ).then((dynamic res) {
       print(res.toString());
-      if (res["error"] != null) throw new Exception(res["error_msg"]);
       return new User.map(res);
     });
   }

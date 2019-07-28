@@ -10,7 +10,6 @@ import 'package:edible/screens/login/login_screen_presenter.dart';
 class LoginScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return new LoginScreenState();
   }
 }
@@ -23,6 +22,7 @@ class LoginScreenState extends State<LoginScreen>
   final formKey = new GlobalKey<FormState>();
   final scaffoldKey = new GlobalKey<ScaffoldState>();
   String _username, _password;
+  User localUser;
 
   LoginScreenPresenter _presenter;
 
@@ -50,7 +50,7 @@ class LoginScreenState extends State<LoginScreen>
   @override
   onAuthStateChanged(AuthState state) {
     if (state == AuthState.LOGGED_IN)
-      Navigator.of(_ctx).pushReplacementNamed("/home");
+      Navigator.of(_ctx).pushNamed("/home", arguments: localUser);
   }
 
   @override
@@ -126,19 +126,27 @@ class LoginScreenState extends State<LoginScreen>
 
   @override
   void onLoginError(String errorTxt) {
-    _showSnackBar(errorTxt);
+    _showSnackBar('Invalid Credentials');
     setState(() => _isLoading = false);
-    Navigator.pushReplacementNamed(context, '/login');
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text("Username and password is incorrect"),
+              content: Text('Please try again'),
+              actions: [
+                FlatButton(
+                    child: Text('Ok'), onPressed: () => Navigator.pop(context))
+              ],
+            ));
   }
 
   @override
   void onLoginSuccess(User user) async {
     _showSnackBar(user.toString());
+    localUser = user;
     setState(() => _isLoading = false);
     var db = new DatabaseHelper();
     await db.saveUser(user);
-    var authStateProvider = new AuthStateProvider();
-    authStateProvider.notify(AuthState.LOGGED_IN);
     Navigator.pushReplacement(
         context,
         new MaterialPageRoute(

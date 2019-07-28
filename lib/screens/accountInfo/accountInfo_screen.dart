@@ -1,18 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:edible/models/user.dart';
+
 
 class AccountInfoScreen extends StatefulWidget {
+  AccountInfoScreen(this.user);
+
+  User user;  
+  
   @override
-  _AccountInfoScreenState createState() => new _AccountInfoScreenState();
+  _AccountInfoScreenState createState() => new _AccountInfoScreenState(user);
 }
 
 class _AccountInfoScreenState extends State<AccountInfoScreen> {
+  
+  _AccountInfoScreenState(this.user);
+
+  User user;
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
         body: new Stack(
       children: <Widget>[
         ClipPath(
-          child: Container(color: Colors.black.withOpacity(0.8)),
+          child: Container(color: Color.fromRGBO(58, 86, 58, 1.0).withOpacity(0.8)),
           clipper: getClipper(),
         ),
         Positioned(
@@ -26,8 +37,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                     decoration: BoxDecoration(
                         color: Colors.red,
                         image: DecorationImage(
-                            image: NetworkImage(
-                                'https://pixel.nymag.com/imgs/daily/vulture/2017/06/14/14-tom-cruise.w700.h700.jpg'),
+                            image: AssetImage('images/acc_icon.png'),
                             fit: BoxFit.cover),
                         borderRadius: BorderRadius.all(Radius.circular(75.0)),
                         boxShadow: [
@@ -35,7 +45,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                         ])),
                 SizedBox(height: 90.0),
                 Text(
-                  'Tom Cruise',
+                  user.firstName + " " + user.lastName,
                   style: TextStyle(
                       fontSize: 30.0,
                       fontWeight: FontWeight.bold,
@@ -43,7 +53,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                 ),
                 SizedBox(height: 15.0),
                 Text(
-                  'Subscribe guys',
+                  user.username,
                   style: TextStyle(
                       fontSize: 17.0,
                       fontStyle: FontStyle.italic,
@@ -52,7 +62,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                 SizedBox(height: 25.0),
                 Container(
                     height: 30.0,
-                    width: 95.0,
+                    width: 250,
                     child: Material(
                       borderRadius: BorderRadius.circular(20.0),
                       shadowColor: Colors.greenAccent,
@@ -62,7 +72,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                         onTap: () {},
                         child: Center(
                           child: Text(
-                            'Edit Name',
+                            'Preferred language: ' + user.language,
                             style: TextStyle(color: Colors.white, fontFamily: 'Montserrat'),
                           ),
                         ),
@@ -71,7 +81,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                     SizedBox(height: 25.0),
                 Container(
                     height: 30.0,
-                    width: 95.0,
+                    width: 250,
                     child: Material(
                       borderRadius: BorderRadius.circular(20.0),
                       shadowColor: Colors.redAccent,
@@ -81,7 +91,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
                         onTap: () {},
                         child: Center(
                           child: Text(
-                            'Log out',
+                            'Dietary Restriction: ' + user.dietaryRestriction,
                             style: TextStyle(color: Colors.white, fontFamily: 'Montserrat'),
                           ),
                         ),
@@ -107,7 +117,6 @@ class getClipper extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) {
-    // TODO: implement shouldReclip
     return true;
   }
 }

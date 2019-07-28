@@ -8,9 +8,9 @@ class User {
   String _dietaryRestriction;
   String _language;
 
-  User(this._username, this._userID, this._firstName
+  User(this._username, this._firstName
    , this._lastName, this._password, this._dietaryRestriction, this._language);
-  
+
   User.mapfromDatabase(dynamic obj) {
     print(obj);
     this._userID = obj["userID"];
@@ -38,8 +38,46 @@ class User {
   String get username => _username;
   String get password => _password;
   String get dietaryRestriction => _dietaryRestriction;
+  String get language => _language;
 
   Map<String, dynamic> toMap() {
+    var map = new Map<String, dynamic>();
+    map["id"] = _userID;
+    map["firstName"] = _firstName;
+    map["lastName"] = _lastName;
+    map["email"] = _username;
+    map["password"] = _password;
+    map["dietaryRestriction"] = _dietaryRestriction;
+    map["language"] = _language;
+
+    return map;
+  }
+
+  void setFirstName(String firstName){
+    _firstName = firstName;
+  }
+
+  void setLastName(String lastName){
+    _lastName = lastName;
+  }
+
+  void setUsername(String userame){
+    _username = username;
+  }
+
+  void setPassword(String password){
+    _password = password;
+  }
+
+  void setDiet(String dietaryRestriction){
+    _dietaryRestriction = dietaryRestriction;
+  }
+
+  void setLanguage(String language){
+    _language = language;
+  }
+
+  Map<String, dynamic> toDatabase() {
     var map = new Map<String, dynamic>();
     map["id"] = _userID;
     map["firstName"] = _firstName;

@@ -1,7 +1,7 @@
 import 'package:edible/routes.dart' as routes;
 import 'package:flutter/material.dart';
 import 'package:edible/screens/home/home_screen.dart';
-import 'package:edible/screens/login/login_screen.dart';
+import 'package:edible/screens/login/login_screen2.dart';
 import 'package:edible/data/database_helper.dart';
 import 'package:edible/models/user.dart';
 
@@ -11,7 +11,7 @@ DatabaseHelper dbh = new DatabaseHelper();
 
 void main() async {
 
-  Widget _defaultHome = new LoginScreen();
+  Widget _defaultHome = new LoginScreen2();
 
   bool _isLoggedIn = await dbh.isLoggedIn();
   

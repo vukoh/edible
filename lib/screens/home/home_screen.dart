@@ -1,9 +1,11 @@
+import 'package:edible/screens/changeDetails/changeDetail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:edible/results.dart';
 import 'package:edible/search.dart';
 import 'package:edible/data/database_helper.dart';
 import 'package:edible/models/user.dart';
 import 'package:edible/screens/accountInfo/accountInfo_screen.dart';
+import 'package:edible/screens/login/login_screen2.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key key, this.title, this.user}) : super(key: key);
@@ -56,12 +58,17 @@ class HomeScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => new AccountInfoScreen()));
+                        builder: (context) => new AccountInfoScreen(user)));
               },
             ),
             new ListTile(
               title: new Text('Change Account Settings'),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => new ChangeDetailScreen(user)));
+              },
             ),
             new ListTile(
               title: new Text('Logout'),

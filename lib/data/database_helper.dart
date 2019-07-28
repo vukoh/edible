@@ -39,7 +39,7 @@ class DatabaseHelper {
   Future<int> saveUser(User user) async {
     print(user.toString());
     var dbClient = await db;
-    int res = await dbClient.insert("User", user.toMap());
+    int res = await dbClient.insert("User", user.toDatabase());
     return res;
   }
 
