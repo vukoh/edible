@@ -11,6 +11,7 @@ const userSchema = new Schema({
     email: String,
     dietaryRestriction: String,
     password: String,
+    language: String,
     permissionLevel: Number
 });
 
