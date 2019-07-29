@@ -21,7 +21,6 @@ class ResultsPage extends StatelessWidget {
           _stringIngredientNamesToCheckTranslated = snapshot.data._stringIngredientNamesToCheckTranslated;
           cleaned_english_ingredients = snapshot.data.cleaned_english_ingredients;
           final List<restrictions.ListItem> items = restrictions.checkandSet(_stringIngredientNamesToCheckTranslated, cleaned_english_ingredients, snapshot.data.user);
-          print('Reached here 3');
           return MaterialApp(
             title: title,
             home: Scaffold(
@@ -36,6 +35,18 @@ class ResultsPage extends StatelessWidget {
                   final item = items[index];
 
                   if (item is restrictions.HeadingItem) {
+                    return InkWell(
+                      child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(item.heading,
+                                    style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey.shade200)),
+                              ],
+                            ));
+                    /*
                     return InkWell(
                       child: Card(
                           elevation: 8.0,
@@ -54,7 +65,7 @@ class ResultsPage extends StatelessWidget {
                               ],
                             ),
                           )));
-
+                  */
                   } else if (item is restrictions.MessageItem) {
                       return InkWell(
                         child: Card(
@@ -102,6 +113,21 @@ class ResultsPage extends StatelessWidget {
                                       style: TextStyle(color: Colors.grey.shade400)),
                                 ],
                               ),
+                            )));
+                  } else if(item is restrictions.MissingItem) {
+                    return InkWell(
+                      child: Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 20.0, bottom: 20.0, left: 10.0, right: 10.0),
+                      child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(item.missingitem,
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontStyle: FontStyle.italic,
+                                        color: Colors.grey.shade50)),
+                              ],
                             )));
                   }
                 },

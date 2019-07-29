@@ -3,10 +3,14 @@ library image_process;
 import 'package:edible/results.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:edible/parse.dart' as parse;
 import 'package:edible/data/database_helper.dart';
 import 'package:edible/models/user.dart';
+//import 'package:image_cropper/image_cropper.dart';
+import 'dart:io';
+import 'package:fluttertoast/fluttertoast.dart';
 
 Future<String> translate(String unparsed_ingredient_text, String _languageCode) async {
   String key = 'AIzaSyAhvb8k3CJx4B8Yp0E1Pjl207II9fCDFHM';
@@ -59,11 +63,35 @@ class PostResult {
   PostResult(this.unparsed_ingredient_text, this.detected_language);
 }
 
+/*
+Future<File> _cropImage(File imageFile) async {
+  File croppedFile = await ImageCropper.cropImage(
+    sourcePath: imageFile.path,
+    ratioX: 1.0,
+    ratioY: 1.0,
+    maxWidth: 512,
+    maxHeight: 512,
+  );
+  return croppedFile;
+}
+*/
+
 Future<AwaitedInformation> overall() async {
   DatabaseHelper dbh = new DatabaseHelper();
   User user = await dbh.getUser();
   String userlanguageCode = getLanguage(user);
-  var _image = await ImagePicker.pickImage(source: ImageSource.camera);
+  Fluttertoast.showToast(
+        msg: "Please make sure the image is in potrait orientation & Ensure only the ingredients are in frame",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        //timeInSecForIos: 1,
+        backgroundColor: Color.fromRGBO(58, 86, 58, 1.0),
+        textColor: Colors.white,
+        //fontSize: 16.0
+    );
+  File _image = await ImagePicker.pickImage(source: ImageSource.camera);
+  //var _imagecropped = await _cropImage(_image);
+  //List<int> imageBytes = _imagecropped.readAsBytesSync();
   List<int> imageBytes = _image.readAsBytesSync();
   String base64Image = base64Encode(imageBytes);
   var url = 'https://vision.googleapis.com/v1/images:annotate?key=AIzaSyAhvb8k3CJx4B8Yp0E1Pjl207II9fCDFHM';

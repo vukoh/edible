@@ -21,7 +21,7 @@ class IntermediaryList {
       outputList.add(curr);
     }
     if(unsuitableIngredients.isEmpty) {
-      outputList.add(new MessageItem('No non-' + this.restriction + ' ingredients found!'));
+      outputList.add(new MissingItem('No non-' + this.restriction + ' ingredients found!'));
     }
 
     outputList.add(new HeadingItem('Missing Ingredients'));
@@ -29,7 +29,7 @@ class IntermediaryList {
       outputList.add(new MessageItem(curr));
     }
     if(missingIngredients.isEmpty) {
-      outputList.add(new MessageItem('No missing ingredients - all ingredients found!'));
+      outputList.add(new MissingItem('No missing ingredients - all ingredients found!'));
     }
 
     outputList.add(new HeadingItem(this.restriction +' Ingredients'));
@@ -37,7 +37,7 @@ class IntermediaryList {
       outputList.add(curr);
     }
     if(this.suitableIngredients.isEmpty) {
-      outputList.add(new MessageItem('No ' + this.restriction + ' ingredients found!'));
+      outputList.add(new MissingItem('No ' + this.restriction + ' ingredients found!'));
     }
 
     return outputList;
@@ -61,6 +61,10 @@ class IngredientItem implements ListItem {
   final Ingredient ingredient;
   final String translated;
   IngredientItem(this.ingredient, this.translated);
+}
+class MissingItem implements ListItem {
+  final String missingitem;
+  MissingItem(this.missingitem);
 }
 
 List<ListItem> setHalal(List<String> _stringIngredientNamesToCheckTranslated, List<String> cleaned_english_ingredients) {
@@ -104,33 +108,26 @@ List<ListItem> setVegetarian(List<String> _stringIngredientNamesToCheckTranslate
   for(int i = 0; i < length; i++) {
     bool foundIngredient = false;
     for(Ingredient curr_ingredient in db.ingredients) {
-      print('Reached here 3');
       print('Curr ingredient: ' + curr_ingredient.name);
       print(cleaned_english_ingredients[i]);
       print(_stringIngredientNamesToCheckTranslated);
       if(curr_ingredient.name.contains(cleaned_english_ingredients[i])) {
-        print('Reached here 4');
         foundIngredient = true;
         if(curr_ingredient.isVegetarian()) {
-          print('Reached here 5');
           vegetarianIngredients.add(new IngredientItem(curr_ingredient, _stringIngredientNamesToCheckTranslated[i]));
           break;
         } else {
-          print('Reached here 6');
           nonVegetarianIngredients.add(new IngredientItem(curr_ingredient, _stringIngredientNamesToCheckTranslated[i]));
           break;
         }
       }
     }
     if(foundIngredient == false) {
-      print('Reached here 7');
       missingIngredients.add(_stringIngredientNamesToCheckTranslated[i]);
     }
   }
-  print('Reached here 8');
   IntermediaryList intermediaryList = new IntermediaryList(vegetarianIngredients, nonVegetarianIngredients, missingIngredients, restriction);
   List<ListItem> outputList = intermediaryList.combineList();
-  print('Reached here 9');
   return outputList;
 }
 

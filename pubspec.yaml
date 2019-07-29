@@ -24,6 +24,8 @@ dependencies:
   sqflite: any
   path_provider: 0.4.0
   uni_links: any
+  # image_cropper: ^1.0.0
+  fluttertoast: 2.1.5
 
   url_launcher:
     git:
