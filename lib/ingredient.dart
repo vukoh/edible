@@ -35,6 +35,32 @@ class Ingredient{
     kosher = json['Kosher'];
   }
 
+  Ingredient.fromDB(Map<String, dynamic> json){
+    name = json['Name'];
+    description = json['Description'];
+    origin = json['Origin'];
+    function = json['functionCharacteristics'];
+    dailyIntake = json['acceptableDailyIntake'];
+    sideEffects = json['sideEffects'];
+    dietaryRestrictions = json['dietaryRestrictions'];
+    halal = json['Halal'];
+    vegetarian = json['Vegetarian'];
+    vegetarianNoMilk = json['VegetarianNoMilk'];
+    vegetarianNoEgg = json['VegetarianNoEgg'];
+    vegetarianNoMilkNoEgg = json['VegetarianNoMilkNoEgg'];
+    vegan = json['Vegan'];
+    lactoOvoPescatarian = json['LactoOvoPescatarian'];
+    kosher = json['Kosher'];
+  }
+
+  // Map<String, dynamic> toMap(){
+  //   Map<String,dynamic> map = new Map();
+  //   map["Name"] = name;
+  //   map["Description"] = description;
+  //   map["Origin"] = origin;
+  //   map["Function & Characteri"]
+  // }
+
   bool isHalal() {
     return this.halal == 1 ? true : false;
   }

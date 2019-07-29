@@ -5,7 +5,6 @@ import 'package:edible/search.dart';
 import 'package:edible/data/database_helper.dart';
 import 'package:edible/models/user.dart';
 import 'package:edible/screens/accountInfo/accountInfo_screen.dart';
-import 'package:edible/screens/login/login_screen2.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key key, this.title, this.user}) : super(key: key);

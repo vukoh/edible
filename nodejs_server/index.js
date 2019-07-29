@@ -44,6 +44,12 @@ app.get('/ingredients', (req, res) => {
     })
 });
 
+app.get('/ingredients/version', (req, res) => {
+    res.send({
+        "version" : 2
+    })
+});
+
 app.get('/ingredients/:name', (req, res) => {
     mysqlConnection.query('SELECT * FROM ingredients WHERE Name = ?', [req.params.name], (err, rows, fields) => {
         if(!err){
