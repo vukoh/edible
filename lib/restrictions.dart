@@ -77,7 +77,7 @@ List<ListItem> setHalal(List<String> _stringIngredientNamesToCheckTranslated, Li
   for(int i = 0; i < length; i++) {
     bool foundIngredient = false;
     for(Ingredient curr_ingredient in db.ingredients) {
-      if(cleaned_english_ingredients[i].contains(curr_ingredient.name)) {
+      if(cleaned_english_ingredients[i].contains(curr_ingredient.name) || curr_ingredient.name.contains(cleaned_english_ingredients[i])) {
         foundIngredient = true;
         if(curr_ingredient.isHalal()) {
           halalIngredients.add(new IngredientItem(curr_ingredient, _stringIngredientNamesToCheckTranslated[i]));
@@ -107,10 +107,7 @@ List<ListItem> setVegetarian(List<String> _stringIngredientNamesToCheckTranslate
   for(int i = 0; i < length; i++) {
     bool foundIngredient = false;
     for(Ingredient curr_ingredient in db.ingredients) {
-      print('Curr ingredient: ' + curr_ingredient.name);
-      print(cleaned_english_ingredients[i]);
-      print(_stringIngredientNamesToCheckTranslated);
-      if(cleaned_english_ingredients[i].contains(curr_ingredient.name)) {
+      if(cleaned_english_ingredients[i].contains(curr_ingredient.name) || curr_ingredient.name.contains(cleaned_english_ingredients[i])) {
         foundIngredient = true;
         if(curr_ingredient.isVegetarian()) {
           vegetarianIngredients.add(new IngredientItem(curr_ingredient, _stringIngredientNamesToCheckTranslated[i]));
@@ -127,8 +124,6 @@ List<ListItem> setVegetarian(List<String> _stringIngredientNamesToCheckTranslate
   }
   IntermediaryList intermediaryList = new IntermediaryList(vegetarianIngredients, nonVegetarianIngredients, missingIngredients, restriction);
   List<ListItem> outputList = intermediaryList.combineList();
-  print('The list:');
-  print(cleaned_english_ingredients);
   return outputList;
 }
 
@@ -142,7 +137,7 @@ List<ListItem> setVegetarianNoMilk(List<String> _stringIngredientNamesToCheckTra
   for(int i = 0; i < length; i++) {
     bool foundIngredient = false;
     for(Ingredient curr_ingredient in db.ingredients) {
-      if(cleaned_english_ingredients[i].contains(curr_ingredient.name)) {
+      if(cleaned_english_ingredients[i].contains(curr_ingredient.name) || curr_ingredient.name.contains(cleaned_english_ingredients[i])) {
         foundIngredient = true;
         if(curr_ingredient.isVegetarianNoMilk()) {
           vegetarianIngredients.add(new IngredientItem(curr_ingredient, _stringIngredientNamesToCheckTranslated[i]));
@@ -172,7 +167,7 @@ List<ListItem> setVegetarianNoEgg(List<String> _stringIngredientNamesToCheckTran
   for(int i = 0; i < length; i++) {
     bool foundIngredient = false;
     for(Ingredient curr_ingredient in db.ingredients) {
-      if(cleaned_english_ingredients[i].contains(curr_ingredient.name)) {
+      if(cleaned_english_ingredients[i].contains(curr_ingredient.name) || curr_ingredient.name.contains(cleaned_english_ingredients[i])) {
         foundIngredient = true;
         if(curr_ingredient.isVegetarianNoEgg()) {
           vegetarianIngredients.add(new IngredientItem(curr_ingredient, _stringIngredientNamesToCheckTranslated[i]));
@@ -202,7 +197,7 @@ List<ListItem> setVegetarianNoMilkNoEgg(List<String> _stringIngredientNamesToChe
   for(int i = 0; i < length; i++) {
     bool foundIngredient = false;
     for(Ingredient curr_ingredient in db.ingredients) {
-      if(cleaned_english_ingredients[i].contains(curr_ingredient.name)) {
+      if(cleaned_english_ingredients[i].contains(curr_ingredient.name) || curr_ingredient.name.contains(cleaned_english_ingredients[i])) {
         foundIngredient = true;
         if(curr_ingredient.isVegetarianNoMilkNoEgg()) {
           vegetarianIngredients.add(new IngredientItem(curr_ingredient, _stringIngredientNamesToCheckTranslated[i]));
@@ -232,7 +227,7 @@ List<ListItem> setVegan(List<String> _stringIngredientNamesToCheckTranslated, Li
   for(int i = 0; i < length; i++) {
     bool foundIngredient = false;
     for(Ingredient curr_ingredient in db.ingredients) {
-      if(cleaned_english_ingredients[i].contains(curr_ingredient.name)) {
+      if(cleaned_english_ingredients[i].contains(curr_ingredient.name) || curr_ingredient.name.contains(cleaned_english_ingredients[i])) {
         foundIngredient = true;
         if(curr_ingredient.isVegan()) {
           veganIngredients.add(new IngredientItem(curr_ingredient, _stringIngredientNamesToCheckTranslated[i]));
@@ -262,7 +257,7 @@ List<ListItem> setLactoOvoPescatarian(List<String> _stringIngredientNamesToCheck
   for(int i = 0; i < length; i++) {
     bool foundIngredient = false;
     for(Ingredient curr_ingredient in db.ingredients) {
-      if(cleaned_english_ingredients[i].contains(curr_ingredient.name)) {
+      if(cleaned_english_ingredients[i].contains(curr_ingredient.name) || curr_ingredient.name.contains(cleaned_english_ingredients[i])) {
         foundIngredient = true;
         if(curr_ingredient.isLactoOvoPescatarian()) {
           lactoOvoPescatarianIngredients.add(new IngredientItem(curr_ingredient, _stringIngredientNamesToCheckTranslated[i]));
@@ -292,7 +287,7 @@ List<ListItem> setKosher(List<String> _stringIngredientNamesToCheckTranslated, L
   for(int i = 0; i < length; i++) {
     bool foundIngredient = false;
     for(Ingredient curr_ingredient in db.ingredients) {
-      if(cleaned_english_ingredients[i].contains(curr_ingredient.name)) {
+      if(cleaned_english_ingredients[i].contains(curr_ingredient.name) || curr_ingredient.name.contains(cleaned_english_ingredients[i])) {
         foundIngredient = true;
         if(curr_ingredient.isKosher()) {
           kosherIngredients.add(new IngredientItem(curr_ingredient, _stringIngredientNamesToCheckTranslated[i]));
