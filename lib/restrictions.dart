@@ -2,6 +2,7 @@ library edible_restrictions;
 
 import 'package:edible/database.dart' as db;
 import 'package:edible/ingredient.dart';
+import 'package:edible/models/user.dart';
 
 //Todo add functionality for "maybe" ie maybe halal etc.
 
@@ -292,3 +293,23 @@ List<ListItem> setKosher(List<String> _stringIngredientNamesToCheck) {
     List<ListItem> outputList = intermediaryList.combineList();
     return outputList;
   }
+
+List<ListItem> checkandSet(List<String> _stringIngredientNamesToCheck, User user) {
+  if(user.dietaryRestriction == 'Halal') {
+    return setHalal(_stringIngredientNamesToCheck);
+  } else if(user.dietaryRestriction == 'Vegetarian') {
+    return setVegetarian(_stringIngredientNamesToCheck);
+  } else if(user.dietaryRestriction == 'Vegetarian (No milk)') {
+    return setVegetarianNoMilk(_stringIngredientNamesToCheck);
+  } else if(user.dietaryRestriction == 'Vegetarian (No egg)') {
+    return setVegetarianNoEgg(_stringIngredientNamesToCheck);
+  } else if(user.dietaryRestriction == 'Vegetarian (No milk & No egg)') {
+    return setVegetarianNoMilkNoEgg(_stringIngredientNamesToCheck);
+  } else if(user.dietaryRestriction == 'Vegan') {
+    return setVegan(_stringIngredientNamesToCheck);
+  } else if(user.dietaryRestriction == 'LactoOvoPescatarian') {
+    return setLactoOvoPescatarian(_stringIngredientNamesToCheck);
+  } else {
+    return setKosher(_stringIngredientNamesToCheck);
+  }
+}

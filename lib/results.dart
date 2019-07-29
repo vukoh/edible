@@ -3,21 +3,23 @@ import 'package:flutter/material.dart';
 import 'package:edible/information.dart';
 import 'package:edible/restrictions.dart' as restrictions;
 import 'package:edible/image_process.dart' as image_process;
+import 'package:edible/models/user.dart';
 
 
 //Rename to something better, better architecture possible?
 class ResultsPage extends StatelessWidget {
   List<String> _stringIngredientNamesToCheck = new List<String>();
+  
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: image_process.overall(),
-      builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<AwaitedInformation> snapshot) {
         if(snapshot.connectionState == ConnectionState.done){
           final title = 'Results';
-          _stringIngredientNamesToCheck = snapshot.data;
-          final List<restrictions.ListItem> items = restrictions.setKosher(_stringIngredientNamesToCheck);
+          _stringIngredientNamesToCheck = snapshot.data._stringIngredientNamesToCheck;
+          final List<restrictions.ListItem> items = restrictions.checkandSet(_stringIngredientNamesToCheck, snapshot.data.user);
           return MaterialApp(
             title: title,
             home: Scaffold(
@@ -112,5 +114,9 @@ class ResultsPage extends StatelessWidget {
   }
 }
 
-
+class AwaitedInformation{
+  User user;
+  List<String> _stringIngredientNamesToCheck;
+  AwaitedInformation(this.user, this._stringIngredientNamesToCheck);
+}
 

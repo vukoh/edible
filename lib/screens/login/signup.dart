@@ -25,7 +25,8 @@ class _SignupPageState extends State<SignupPage> {
         body: jsonEncode(user.toMap()), headers: header);
     Navigator.pop(context);
   }
-
+  String dropdownvalueDiet = 'Halal';
+  String dropdownvalueLanguage = 'English';
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -112,6 +113,24 @@ class _SignupPageState extends State<SignupPage> {
                         obscureText: true,
                       ),
                       SizedBox(height: 10.0),
+                      DropdownButton<String>(
+                        value: dropdownvalueDiet,
+                        onChanged: (String newValue) {
+                          dietaryRestriction = newValue;
+                          setState(() {
+                            dropdownvalueDiet = newValue;
+                          });
+                        },
+                        items: diets
+                          .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          })
+                          .toList(),
+                      ),
+                      /*
                       TextField(
                         onChanged: (val) => dietaryRestriction = val,
                         decoration: InputDecoration(
@@ -123,7 +142,26 @@ class _SignupPageState extends State<SignupPage> {
                             focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.green))),
                       ),
+                      */
                       SizedBox(height: 10.0),
+                      DropdownButton<String>(
+                        value: dropdownvalueLanguage,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            dropdownvalueLanguage = newValue;
+                          });
+                          language = newValue;
+                        },
+                        items: languages
+                          .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          })
+                          .toList(),
+                      ),
+                      /*
                       TextField(
                         onChanged: (val) => language = val,
                         decoration: InputDecoration(
@@ -135,6 +173,7 @@ class _SignupPageState extends State<SignupPage> {
                             focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.green))),
                       ),
+                      */
                       SizedBox(height: 20),
                       ButtonTheme(
                         shape: new RoundedRectangleBorder(
@@ -207,3 +246,115 @@ class _SignupPageState extends State<SignupPage> {
             ]));
   }
 }
+var languages = ['Afrikaans',
+'Albanian',
+'Amharic',
+'Arabic',
+'Armenian',
+'Azerbaijani',
+'Basque',
+'Belarusian',
+'Bengali',
+'Bosnian',
+'Bulgarian',
+'Catalan',
+'Cebuano',
+'Chinese (Simplified)',
+'Chinese (Traditional)',
+'Corsican',
+'Croatian',
+'Czech',
+'Danish',
+'Dutch',
+'English',
+'Esperanto',
+'Estonian',
+'Finnish',
+'French',
+'Frisian',
+'Galician',
+'Georgian',
+'German',
+'Greek',
+'Gujarati',
+'Haitian Creole',
+'Hausa',
+'Hawaiian',
+'Hebrew',
+'Hindi',
+'Hmong',
+'Hungarian',
+'Icelandic',
+'Igbo',
+'Indonesian',
+'Irish',
+'Italian',
+'Japanese',
+'Javanese',
+'Kannada',
+'Kazakh',
+'Khmer',
+'Korean',
+'Kurdish',
+'Kyrgyz',
+'Lao',
+'Latin',
+'Latvian',
+'Lithuanian',
+'Luxembourgish',
+'Macedonian',
+'Malagasy',
+'Malay',
+'Malayalam',
+'Maltese',
+'Maori',
+'Marathi',
+'Mongolian',
+'Myanmar (Burmese)',
+'Nepali',
+'Norwegian',
+'Nyanja (Chichewa)',
+'Pashto',
+'Persian',
+'Polish',
+'Portuguese (Portugal, Brazil)',
+'Punjabi',
+'Romanian',
+'Russian',
+'Samoan',
+'Scots Gaelic',
+'Serbian',
+'Sesotho',
+'Shona',
+'Sindhi',
+'Sinhala (Sinhalese)',
+'Slovak',
+'Slovenian',
+'Somali',
+'Spanish',
+'Sundanese',
+'Swahili',
+'Swedish',
+'Tagalog (Filipino)',
+'Tajik',
+'Tamil',
+'Telugu',
+'Thai',
+'Turkish',
+'Ukrainian',
+'Urdu',
+'Uzbek',
+'Vietnamese',
+'Welsh',
+'Xhosa',
+'Yiddish',
+'Yoruba',
+'Zulu'];
+var diets = ['Halal',
+'Vegetarian',
+'Vegetarian (No milk)',
+'Vegetarian (No egg)',
+'Vegetarian (No milk & No egg)',
+'Vegan',
+'LactoOvoPescatarian',
+'Kosher'];
