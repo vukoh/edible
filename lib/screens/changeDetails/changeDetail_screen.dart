@@ -142,7 +142,7 @@ class _ChangeDetailScreenState extends State<ChangeDetailScreen> {
                 child: Stack(
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.fromLTRB(15.0, 60.0, 0.0, 0.0),
+                      padding: EdgeInsets.fromLTRB(15.0, 40.0, 0.0, 0.0),
                       child: Text(
                         'Change',
                         style: TextStyle(
@@ -150,7 +150,7 @@ class _ChangeDetailScreenState extends State<ChangeDetailScreen> {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.fromLTRB(257.0, 58.0, 0.0, 0.0),
+                      padding: EdgeInsets.fromLTRB(257.0, 38.0, 0.0, 0.0),
                       child: Text(
                         '.',
                         style: TextStyle(
