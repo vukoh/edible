@@ -5,7 +5,7 @@ import 'package:edible/models/user.dart';
 class AccountInfoScreen extends StatefulWidget {
   AccountInfoScreen(this.user);
 
-  User user;  
+  final User user;  
   
   @override
   _AccountInfoScreenState createState() => new _AccountInfoScreenState(user);

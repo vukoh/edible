@@ -16,7 +16,6 @@ NetworkUtil _netUtil = NetworkUtil();
 void main() async {
 
   Widget _defaultHome = new LoginScreen2();
-  bool _isLoggedIn = await dbh.isLoggedIn();
   int fdbLocalVersion = await fdb.getVersion();
   var versionJSON = await _netUtil.get("https://cryptic-lake-93970.herokuapp.com/ingredients/version");
   int fdbOnlineVersion = versionJSON["version"];
@@ -27,9 +26,9 @@ void main() async {
     await fdb.updateDB();
     fdb.setVersion(fdbOnlineVersion);
   }
-
   db.ingredients = await fdb.getIngredients();
-
+  bool _isLoggedIn = await dbh.isLoggedIn();
+  
   if(_isLoggedIn){
     User user = await dbh.getUser();
     print(user);

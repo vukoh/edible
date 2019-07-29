@@ -24,20 +24,20 @@ class FoodDatabaseHelper {
 
   initDb() async {
     io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, "i.db");
-    var theDb = await openDatabase(path, version: 2, onCreate: _onCreate);
+    String path = join(documentsDirectory.path, "food.db");
+    var theDb = await openDatabase(path, version: 1, onCreate: _onCreate);
     return theDb;
   }
 
   void _onCreate(Database db, int version) async {
     // When creating the db, create the table
     await db.execute(
-        "CREATE TABLE Ingredient(id INTEGER PRIMARY KEY, Name TEXT, `Description` TEXT," +
+        "CREATE TABLE Ingredient(id INT, Name TEXT, `Description` TEXT," +
             "Origin TEXT, functionCharacteristics TEXT, acceptableDailyIntake TEXT," +
             "sideEffects TEXT, dietaryRestrictions TEXT, Halal INT," +
             "Vegetarian INT, VegetarianNoMilk INT, VegetarianNoEgg INT," +
             "VegetarianNoMilkNoEgg INT, Vegan INT, LactoOvoPescatarian INT," +
-            "Kosher INT)");
+            "Kosher INT, UNIQUE(id, Name) ON CONFLICT REPLACE)");
     print("Created tables");
   }
 
@@ -59,7 +59,7 @@ class FoodDatabaseHelper {
     for(var ingredientJson in ingredientsJson){
       Map<String, dynamic> map = ingredientJson;
       print(map);
-      dbClient.update('Ingredient', map);
+      dbClient.insert('Ingredient', map);
     }
     print('table updated');
     return 1;
