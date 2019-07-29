@@ -81,7 +81,7 @@ Future<AwaitedInformation> overall() async {
   User user = await dbh.getUser();
   String userlanguageCode = getLanguage(user);
   Fluttertoast.showToast(
-        msg: "Please make sure the image is in potrait orientation & Ensure only the ingredients are in frame",
+        msg: "Please make sure the ingredients are the only text in frame! Tip - Use your hand to cover up other text",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
         //timeInSecForIos: 1,
