@@ -1,25 +1,41 @@
+import 'package:edible/data/foodDatabase_helper.dart';
 import 'package:edible/routes.dart' as routes;
 import 'package:flutter/material.dart';
 import 'package:edible/screens/home/home_screen.dart';
 import 'package:edible/screens/login/login_screen2.dart';
 import 'package:edible/data/database_helper.dart';
 import 'package:edible/models/user.dart';
+import 'package:edible/utils/network_util.dart';
 
 import 'package:edible/database.dart' as db;
 
 DatabaseHelper dbh = new DatabaseHelper();
+FoodDatabaseHelper fdb = new FoodDatabaseHelper();
+NetworkUtil _netUtil = NetworkUtil();
 
 void main() async {
 
   Widget _defaultHome = new LoginScreen2();
-
   bool _isLoggedIn = await dbh.isLoggedIn();
-  
+  int fdbLocalVersion = await fdb.getVersion();
+  var versionJSON = await _netUtil.get("https://cryptic-lake-93970.herokuapp.com/ingredients/version");
+  int fdbOnlineVersion = versionJSON["version"];
+
+  print(fdbLocalVersion);
+  print(fdbOnlineVersion);
+  if(fdbLocalVersion != fdbOnlineVersion){
+    await fdb.updateDB();
+    fdb.setVersion(fdbOnlineVersion);
+  }
+
+  db.ingredients = await fdb.getIngredients();
+
   if(_isLoggedIn){
     User user = await dbh.getUser();
     print(user);
     _defaultHome = new HomeScreen(title: 'Edible', user: user);
   }
+
 
   runApp(new MyApp(_defaultHome));
 
@@ -33,10 +49,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    db.fetchIngredient().then((value){
-      db.ingredients.addAll(value);
-    });
-
     return MaterialApp(
       title: 'Edible',
       theme: ThemeData(primarySwatch: Colors.green),
