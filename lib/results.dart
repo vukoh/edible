@@ -8,8 +8,8 @@ import 'package:edible/models/user.dart';
 
 //Rename to something better, better architecture possible?
 class ResultsPage extends StatelessWidget {
-  List<String> _stringIngredientNamesToCheck = new List<String>();
-  
+  List<String> _stringIngredientNamesToCheckTranslated = new List<String>();
+  List<String> cleaned_english_ingredients = new List<String>();
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +18,10 @@ class ResultsPage extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<AwaitedInformation> snapshot) {
         if(snapshot.connectionState == ConnectionState.done){
           final title = 'Results';
-          _stringIngredientNamesToCheck = snapshot.data._stringIngredientNamesToCheck;
-          final List<restrictions.ListItem> items = restrictions.checkandSet(_stringIngredientNamesToCheck, snapshot.data.user);
+          _stringIngredientNamesToCheckTranslated = snapshot.data._stringIngredientNamesToCheckTranslated;
+          cleaned_english_ingredients = snapshot.data.cleaned_english_ingredients;
+          final List<restrictions.ListItem> items = restrictions.checkandSet(_stringIngredientNamesToCheckTranslated, cleaned_english_ingredients, snapshot.data.user);
+          print('Reached here 3');
           return MaterialApp(
             title: title,
             home: Scaffold(
@@ -91,7 +93,7 @@ class ResultsPage extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text(item.ingredient.name,
+                                  Text(item.translated,
                                       style: TextStyle(
                                           fontSize: 18,
                                           //fontWeight: FontWeight.bold,
@@ -116,7 +118,8 @@ class ResultsPage extends StatelessWidget {
 
 class AwaitedInformation{
   User user;
-  List<String> _stringIngredientNamesToCheck;
-  AwaitedInformation(this.user, this._stringIngredientNamesToCheck);
+  List<String> _stringIngredientNamesToCheckTranslated;
+  List<String> cleaned_english_ingredients;
+  AwaitedInformation(this.user, this._stringIngredientNamesToCheckTranslated, this.cleaned_english_ingredients);
 }
 

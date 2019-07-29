@@ -83,18 +83,21 @@ Future<AwaitedInformation> overall() async {
       ]
     };
   var postResult = await post(url, json.encode(body));
-  String translated_ingredients;
-  String english_ingredients;
-  if(postResult.detected_language == userlanguageCode && postResult.detected_language == 'en') {
-    return new AwaitedInformation(user, parse.clean(postResult.unparsed_ingredient_text));
-  } else if(postResult.detected_language == 'en') {
-    translated_ingredients = await translate(postResult.unparsed_ingredient_text, userlanguageCode);
-    return new AwaitedInformation(user, parse.clean(postResult.unparsed_ingredient_text));
+  List<String> _stringIngredientNamesToCheckTranslated = new List<String>();
+  List<String> cleaned_english_ingredients = new List<String>();
+  if(postResult.detected_language == 'en') {
+    cleaned_english_ingredients = parse.clean(postResult.unparsed_ingredient_text);
   } else {
-    translated_ingredients = await translate(postResult.unparsed_ingredient_text, userlanguageCode);
-    english_ingredients = await translate(postResult.unparsed_ingredient_text, 'en');
-    return new AwaitedInformation(user, parse.clean(postResult.unparsed_ingredient_text));
+    cleaned_english_ingredients = parse.clean(await translate(postResult.unparsed_ingredient_text, 'en'));
   }
+  if(userlanguageCode == 'en') {
+    _stringIngredientNamesToCheckTranslated = cleaned_english_ingredients;
+  } else {
+    for(String ingredient in cleaned_english_ingredients) {
+      _stringIngredientNamesToCheckTranslated.add(await translate(ingredient, userlanguageCode));
+    }
+  }
+  return new AwaitedInformation(user, _stringIngredientNamesToCheckTranslated, cleaned_english_ingredients);
 }
 
 String getLanguage(User user) {
