@@ -28,13 +28,14 @@ void main() async {
     fdb.setVersion(fdbOnlineVersion);
   }
 
+  db.ingredients = await fdb.getIngredients();
+
   if(_isLoggedIn){
     User user = await dbh.getUser();
     print(user);
     _defaultHome = new HomeScreen(title: 'Edible', user: user);
   }
 
-  db.ingredients = await fdb.getIngredients();
 
   runApp(new MyApp(_defaultHome));
 
